@@ -1,0 +1,91 @@
+/* 设置整个页面的样式 */
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: show;  /*隐藏页面滚动条 */
+    width: 100%;
+    height: 100%;
+    background-color: #e7d4d4; /* 设置背景颜色 */
+}
+/* 创建流体背景 */
+body {
+    background-image: linear-gradient(to bottom, rgb(234, 223, 213), rgb(226, 140, 204)); /* 渐变背景 */
+    opacity: 0.8; /* 背景透明度 */
+    animation: fluidAnimation 10s linear infinite; /* 添加流体动画效果 */
+}
+
+/* List*/
+#prizes {
+    list-style: none; /* 移除列表项前面的圆点 */
+    padding: 0; /* 移除默认的列表内边距 */
+    text-align: left; /* 文本左对齐 */
+}
+
+#prizes li {
+    margin: 5px 0; /* 设置每个列表项的上下间距 */
+}
+
+
+/* 定义流体动画 */
+@keyframes fluidAnimation {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 100% 0%;
+    }
+}
+
+/* Center */
+.center-container {   
+    display: flex;
+    flex-direction: column;  /*垂直排列文本和按钮 */
+    align-items: center;  /*水平居中 */
+    justify-content: center;  /*垂直居中 */
+    height: 100vh; /*100% 视口高度，使内容垂直居中 */
+    text-align: center; /* 文本水平居中 */
+
+    /*position: absolute;
+    bottom: 50%;
+    right: 50%;   */
+}
+.center-list{
+    /*display: list-item;
+    /*flex-direction: column; /*垂直排列文本和按钮 */
+    /*align-items: center; /* 水平居中 */
+    /*justify-content: center; /* 垂直居中 */
+    /*height: 100vh;  /*100% 视口高度，使内容垂直居中 */
+    background-color: #c2abee; /* 设置背景颜色 */
+    /*position: absolute;
+    bottom: 0%;
+    right: 50%;   */
+}
+
+
+
+
+
+
+/* 烟火的样式 */
+.firework {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #f00; /* 设置烟火颜色 */
+    border-radius: 50%;
+    animation: explode 2s ease-out; /* 设置烟火爆炸动画 */
+}
+
+/* 关键帧动画，烟火爆炸效果 */
+@keyframes explode {
+    
+    0% {/*出生*/
+        
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% { /*消失*/
+        transform: scale(2);
+        opacity: 0; 
+    }
+}
