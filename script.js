@@ -9,7 +9,7 @@ class Card {
         return `${this.rarity} 稀有度的 ${this.name} 卡牌`;
     }
 }
-
+/*
 const commonCards = [
     new Card("+5mins", "R",70),
     new Card("+10mins", "R",70),
@@ -24,7 +24,7 @@ const rareCards = [
 const legendaryCards = [
     new Card("1000!!!!", "SSR",5),
 ];
-/*
+
 //機率
 const probabilities = {
     common: 70,
