@@ -56,11 +56,22 @@ function updateText() {
     remainingDraws = drawCount.value;
 }
 
+function pressedButton(num){    
+    if(num == 1) {
+        drawCard();
+    }else{
+         
+        for(let i=remainingDraws  ; i >0  ; i--){                      
+            drawCard();
+            //console.log(i);
+        }
+    }
+
+}
+
 //抽獎
 function drawCard() {
-
-    
-    if( drawCount.value == 0 || drawCount.value == "" || isNaN(drawCount.value)   ){
+     if( drawCount.value == 0 || drawCount.value == "" || isNaN(drawCount.value)   ){
         alert("抽卡次數無效！");
         return;
     }
@@ -72,64 +83,66 @@ function drawCard() {
     }
 
     // 隐藏 label 文字内容 , 輸入框   
-   InputSet.style.display = "none"; 
-    remainingDraws--; // 減少剩餘抽卡次數    
+    InputSet.style.display = "none"; 
    
-    const randomNum = Math.random() * 100;
-    let drawnCard;
-
-    //R .SR .SSR 機率
-    if (randomNum < probabilities.common) {
-        drawnCard = commonCards[Math.floor(Math.random() * commonCards.length)];
-        SumR++;
         
-    } else if (randomNum < probabilities.common + probabilities.rare) {
-        drawnCard = rareCards[Math.floor(Math.random() * rareCards.length)];
-        SumSR++;
+        remainingDraws--; // 減少剩餘抽卡次數    
+        const randomNum = Math.random() * 100;
+        let drawnCard;
+        //R .SR .SSR 機率
+        if (randomNum < probabilities.common) {
+            drawnCard = commonCards[Math.floor(Math.random() * commonCards.length)];
+            SumR++;
+            
+        } else if (randomNum < probabilities.common + probabilities.rare) {
+            drawnCard = rareCards[Math.floor(Math.random() * rareCards.length)];
+            SumSR++;
+            
+        } else {
+            drawnCard = legendaryCards[Math.floor(Math.random() * legendaryCards.length)];
+            SumSSR++;
         
-    } else {
-        drawnCard = legendaryCards[Math.floor(Math.random() * legendaryCards.length)];
-        SumSSR++;
-       
-    }
-    
-    // 將抽到的卡牌添加到獎項列表
-    prizeList.push(drawnCard);
-
-
-    ///顯示結果
-    const resultElement = document.getElementById("result");
-    resultElement.innerHTML = `你抽到了一張卡牌：${drawnCard}`;
-
-    // 更新剩餘抽卡次數
-    const remainingDrawsElement = document.getElementById("remainingDraws");
-    remainingDrawsElement.textContent = remainingDraws;
-    SSRcount.textContent = SumSSR;
-    SRcount.textContent = SumSR;
-    Rcount.textContent = SumR;
-    // 更新List列表
-    const prizeListElement = document.getElementById("prizes");
-    prizeListElement.innerHTML = "";
-    
-
-    // 列表數字初始化1
-    let counter = 1;
-    for (const prize of prizeList) {        
-        const li = document.createElement("li");
-         // 使用counter显示数字，并在列表项中添加<span>元素
-        li.innerHTML = `<span>${counter}.</span> ${prize.toString()}`;
-       //li.textContent = prize.toString();
-         // 将新的节点插入到列表的顶部
-        if (prizeListElement.firstChild) {
-            //指定節點之前插入
-            prizeListElement.insertBefore(li, prizeListElement.firstChild);
-        }else{
-            prizeListElement.appendChild(li);
         }
-        // 增加计数器以显示下一个数字
-        counter++;
         
-    }
+        // 將抽到的卡牌添加到獎項列表
+        prizeList.push(drawnCard);
+
+
+        ///顯示結果
+        const resultElement = document.getElementById("result");
+        resultElement.innerHTML = `你抽到了一張卡牌：${drawnCard}`;
+
+        // 更新剩餘抽卡次數
+        const remainingDrawsElement = document.getElementById("remainingDraws");
+        remainingDrawsElement.textContent = remainingDraws;
+        SSRcount.textContent = SumSSR;
+        SRcount.textContent = SumSR;
+        Rcount.textContent = SumR;
+        // 更新List列表
+        const prizeListElement = document.getElementById("prizes");
+        prizeListElement.innerHTML = "";
+  
+
+        // 列表數字初始化1
+        let counter = 1;
+        for (const prize of prizeList) {        
+            const li = document.createElement("li");
+            // 使用counter显示数字，并在列表项中添加<span>元素
+            li.innerHTML = `<span>${counter}.</span> ${prize.toString()}`;
+        //li.textContent = prize.toString();
+            // 将新的节点插入到列表的顶部
+            if (prizeListElement.firstChild) {
+                //指定節點之前插入
+                prizeListElement.insertBefore(li, prizeListElement.firstChild);
+            }else{
+                prizeListElement.appendChild(li);
+            }
+            // 增加计数器以显示下一个数字
+            counter++;
+            
+        }
+
+   
 
     
    
