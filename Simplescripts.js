@@ -1,4 +1,4 @@
-
+/*
 class Card {
     constructor(name, rarity) {
         this.name = name;
@@ -20,3 +20,4 @@ function drawCard() {
     const resultElement = document.getElementById("result");
     resultElement.innerHTML = `你抽到了一張卡牌：${drawnCard}`;
 }
+*/
