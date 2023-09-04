@@ -1,14 +1,15 @@
 class Card {
     constructor(name, rarity) {
         this.name = name;
-        this.rarity = rarity;        
+        this.rarity = rarity;
     }
     
     toString() {
         return `${this.rarity} 稀有度的 ${this.name} 卡牌`;
     }
 }
-/*
+
+
 const commonCards = [
     new Card("+5mins", "R"),
     new Card("+10mins", "R"),
@@ -26,17 +27,15 @@ const legendaryCards = [
 
 //機率
 const probabilities = {
-    common: 70,
-    rare: 25,
-    legendary: 5,
+    common: 80,
+    rare: 19,
+    legendary: 1,
 };
-*/
-
 
 
 let remainingDraws = 0; // 設定初始可抽卡次數
 let prizeList = []; // 儲存抽到的獎項
-
+let SumSSR=0,SumSR=0,SumR=0;
 
 // 獲取　輸入框數值、顯示值數值文字、煙火容器、重置按鈕
 const drawCount = document.getElementById("drawCount");
@@ -46,6 +45,10 @@ const resetButton = document.getElementById("resetList");
 const InputSet = document.getElementById("InputSet");
 const color = document.querySelector('.color');
 
+const SSRcount = document.getElementById("SSRcount");
+const SRcount = document.getElementById("SRcount");
+const Rcount = document.getElementById("Rcount");
+
 //更新輸入框
 function updateText() {
     const inputValue = drawCount.value; // 获取输入框的值
@@ -53,13 +56,9 @@ function updateText() {
     remainingDraws = drawCount.value;
 }
 
-
-// 计算概率权重的总和
-const totalWeight = probabilities.reduce((acc, reward) => acc + reward.weight, 0);
-
 //抽獎
-function drawCard() {   
- 
+function drawCard() {
+
     
     if( drawCount.value == 0 || drawCount.value == "" || isNaN(drawCount.value)   ){
         alert("抽卡次數無效！");
@@ -71,21 +70,29 @@ function drawCard() {
         alert("你已用完所有抽卡次數！");
         return;      
     }
+
     // 隐藏 label 文字内容 , 輸入框   
    InputSet.style.display = "none"; 
-    remainingDraws--; // 減少剩餘抽卡次數
-    
-    const randomNum = Math.random() * totalWeight;
-    let drawnCard;   
+    remainingDraws--; // 減少剩餘抽卡次數    
+   
+    const randomNum = Math.random() * 100;
+    let drawnCard;
+
     //R .SR .SSR 機率
     if (randomNum < probabilities.common) {
         drawnCard = commonCards[Math.floor(Math.random() * commonCards.length)];
+        SumR++;
+        
     } else if (randomNum < probabilities.common + probabilities.rare) {
         drawnCard = rareCards[Math.floor(Math.random() * rareCards.length)];
+        SumSR++;
+        
     } else {
         drawnCard = legendaryCards[Math.floor(Math.random() * legendaryCards.length)];
+        SumSSR++;
+       
     }
-   
+    
     // 將抽到的卡牌添加到獎項列表
     prizeList.push(drawnCard);
 
@@ -97,10 +104,13 @@ function drawCard() {
     // 更新剩餘抽卡次數
     const remainingDrawsElement = document.getElementById("remainingDraws");
     remainingDrawsElement.textContent = remainingDraws;
-
+    SSRcount.textContent = SumSSR;
+    SRcount.textContent = SumSR;
+    Rcount.textContent = SumR;
     // 更新List列表
     const prizeListElement = document.getElementById("prizes");
     prizeListElement.innerHTML = "";
+    
 
     // 列表數字初始化1
     let counter = 1;
@@ -120,9 +130,13 @@ function drawCard() {
         counter++;
         
     }
+
     
    
 }
+
+
+
 //重置
 function resetList(){
     // 显示输入框和抽奖按钮
@@ -137,6 +151,12 @@ function resetList(){
     //結果顯示
     const resultElement = document.getElementById("result");
     resultElement.innerHTML = ``;
+    SumR=0;
+    SumSR=0;SumSSR=0;
+    SSRcount.textContent = SumSSR;
+    SRcount.textContent = SumSR;
+    Rcount.textContent = SumR;
+
     //列表重置
     prizeList=[];
     const prizeListElement = document.getElementById("prizes");
@@ -150,6 +170,7 @@ function generateRandomCode() {
     var myRandomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
      return myRandomColor;
   }
+
 
 // 隨機生成煙花
 function createFirework() {
