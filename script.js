@@ -1,7 +1,8 @@
 class Card {
-    constructor(name, rarity) {
+    constructor(name, rarity, weight) {
         this.name = name;
         this.rarity = rarity;
+        this.weight = weight;
     }
     
     toString() {
@@ -10,26 +11,38 @@ class Card {
 }
 
 const commonCards = [
-    new Card("+5mins", "R"),
-    new Card("+10mins", "R"),
-    new Card("+15mins", "R"),
+    new Card("+5mins", "R",70),
+    new Card("+10mins", "R",70),
+    new Card("+15mins", "R",70),
 ];
 
 const rareCards = [
-    new Card("100", "SR"),
-    new Card("50", "SR"),
+    new Card("100", "SR",25),
+    new Card("50", "SR",25),
 ];
 
 const legendaryCards = [
-    new Card("1000!!!!", "SSR"),
+    new Card("1000!!!!", "SSR",5),
 ];
-
+/*
 //機率
 const probabilities = {
     common: 70,
     rare: 25,
     legendary: 5,
 };
+*/
+// 使用权重来定义奖励
+const rewards = [
+    { name: "+5mins", rarity: "R", weight: 70 },
+    { name: "+10mins", rarity: "R", weight: 70 },
+    { name: "+15mins", rarity: "R", weight: 70 },
+    { name: "100", rarity: "SR", weight: 25 },
+    { name: "50", rarity: "SR", weight: 25 },
+    { name: "1000!!!!", rarity: "SSR", weight: 5 },
+];
+// 计算权重的总和
+const totalWeight = rewards.reduce((acc, reward) => acc + reward.weight, 0);
 
 let remainingDraws = 0; // 設定初始可抽卡次數
 let prizeList = []; // 儲存抽到的獎項
@@ -50,11 +63,15 @@ function updateText() {
     remainingDraws = drawCount.value;
 }
 
+
+// 计算概率权重的总和
+const totalWeight = probabilities.reduce((acc, reward) => acc + reward.weight, 0);
+
 //抽獎
-function drawCard() {
-   
-   
-   
+function drawCard() {   
+   // 随机生成一个权重值
+    const randomWeight = Math.random() * totalWeight;
+    
     if( drawCount.value == 0 || drawCount.value == "" || isNaN(drawCount.value)   ){
         alert("抽卡次數無效！");
         return;
@@ -65,15 +82,25 @@ function drawCard() {
         alert("你已用完所有抽卡次數！");
         return;      
     }
-    // 隐藏 label 文字内容 , 輸入框
-   
+    // 隐藏 label 文字内容 , 輸入框   
    InputSet.style.display = "none"; 
-
     remainingDraws--; // 減少剩餘抽卡次數
-
-    const randomNum = Math.random(0,100) * 100;
-    let drawnCard;
-    //R .SR .SSR 機率
+    
+    const randomNum = Math.random() * totalWeight;
+    // 根据权重值确定抽到的奖励
+    let accumulatedWeight = 0;
+    let drawnCard;   
+     // 根據權重選擇卡牌
+    for (const reward of rewards) {
+        accumulatedWeight += reward.weight;
+        
+        if (randomWeight <= accumulatedWeight) {
+            drawnReward = reward;
+            break;
+        }
+    }
+    /*
+     //R .SR .SSR 機率
     if (randomNum < probabilities.common) {
         drawnCard = commonCards[Math.floor(Math.random() * commonCards.length)];
     } else if (randomNum < probabilities.common + probabilities.rare) {
@@ -81,6 +108,7 @@ function drawCard() {
     } else {
         drawnCard = legendaryCards[Math.floor(Math.random() * legendaryCards.length)];
     }
+    */
     // 將抽到的卡牌添加到獎項列表
     prizeList.push(drawnCard);
 
